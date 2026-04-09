@@ -1,13 +1,16 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Enfermaria extends Data {
 
     private String idEnfermaria;
     private int numCamas;
-    private int episodios;
+    private List<Episodio> episodios;
 
     public Enfermaria(String idEnfermaria, int numCamas, int episodios) {
         this.idEnfermaria = idEnfermaria;
         this.numCamas = numCamas;
-        this.episodios = episodios;
+        this.episodios = new ArrayList<>();
     }
 
     public String getIdEnfermaria() {
@@ -26,7 +29,7 @@ public abstract class Enfermaria extends Data {
         this.numCamas = numCamas;
     }
 
-    public int getEpisodios (){
+    public List<Episodio> getEpisodios (){
         return episodios;
     }
 
@@ -34,8 +37,14 @@ public abstract class Enfermaria extends Data {
         this.episodios = episodios;
     }
 
-    public void calcularOcupacao(Data datareferencia){
-        int ocupacao = episodios
+    public int calcularOcupacao(Data datareferencia){
+        int ocupacao = 0;
+        for(Episodio episodio : episodios){
+            if(episodio.isAtivo(datareferencia)){
+                ocupacao++;
+            }
+        }
+        return ocupacao;
     }
 
 
