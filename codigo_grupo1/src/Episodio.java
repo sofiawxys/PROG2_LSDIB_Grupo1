@@ -1,22 +1,27 @@
-public class Episodio implements Data {
+public class Episodio{
     private int idCama;
     private Data dataAdmissao;
     private Data dataAlta;
     private int loS; // Length of Stay em dias
     private boolean flagAlta; // true se o episódio já tem alta
 
-    public Episodio(int idCama, Data dataAdmissao) {
+    public Episodio(int idCama, Data dataAdmissao, Data dataAlta) {
         this.idCama = idCama;
         this.dataAdmissao = dataAdmissao;
-        this.dataAlta = null;
-        this.loS = 0;
-        this.flagAlta = false;
+        if  (dataAlta != null) {
+            if(dataAlta.isMaior(dataAdmissao)) {}
+            this.dataAlta = dataAlta;
+            this.flagAlta = true;
+        } else{
+            this.dataAlta = null;
+            this.flagAlta = false;
+        }
     }
 
     // cálculo do LoS
-    private void calcularLoS() {
-
-
+    private int calcularLoS() {
+        int los = dataAdmissao.calcularDiferenca(dataAlta);
+        return los;
     }
 
     //Getters
@@ -60,8 +65,8 @@ public class Episodio implements Data {
     public boolean isAtivo(Data dataReferencia) {
         // Episódio ativo se foi admitido até à data de referência
         // e ainda não teve alta (ou a alta é após a data de referência)
-        boolean admitido = !dataAdmissao.isAfter(dataReferencia);
-        boolean semAlta = !flagAlta || dataAlta.isAfter(dataReferencia);
+        boolean admitido = !dataAdmissao.isMaior(dataReferencia);
+        boolean semAlta = !flagAlta || dataAlta.isMaior(dataReferencia);
         return admitido && semAlta;
     }
 
