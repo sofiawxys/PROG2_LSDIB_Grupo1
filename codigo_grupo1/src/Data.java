@@ -64,7 +64,7 @@ public class Data {
             this.dia = dia;
         }
         /**
-         * Constrói uma instância de Data com a data por omissÃ£o.
+         * Constrói uma instância de Data com a data por omissão.
          */
         public Data(Data data) {
             ano = data.ano;
@@ -72,7 +72,7 @@ public class Data {
             dia = data.dia;
         }
         /**
-         * Constrói uma instância de Data com a data por omissÃ£o.
+         * Constrói uma instância de Data com a data por omissão.
          */
         public Data() {
             ano = ANO_POR_OMISSAO;
@@ -152,13 +152,13 @@ public class Data {
         }
 
         /**
-         * Devolve true se a data for maior do que a data recebida por parÃ¢metro.
-         * Se a data for menor ou igual Ã  data recebida por parÃ¢metro, devolve
+         * Devolve true se a data for maior do que a data recebida por parametro.
+         * Se a data for menor ou igual à data recebida por parametro, devolve
          * false.
          *
          * @param outraData a outra data com a qual se compara a data
-         * @return true se a data for maior do que a data recebida por parÃ¢metro,
-         *         caso contrÃ¡rio devolve false
+         * @return true se a data for maior do que a data recebida por parametro,
+         *         caso contrario devolve false
          */
         public boolean isMaior(Data outraData) {
             int totalDias = contarDias();
@@ -184,7 +184,7 @@ public class Data {
         }
 
         /**
-         * Devolve a diferenÃ§a em número de dias entre a data e a data recebida por
+         * Devolve a diferença em número de dias entre a data e a data recebida por
          * parâmetro com ano, mês e dia
          *
          * @param ano o ano da data com a qual se compara a data para calcular a
