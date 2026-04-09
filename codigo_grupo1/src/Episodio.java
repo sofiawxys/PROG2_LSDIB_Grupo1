@@ -1,4 +1,4 @@
-public class Episodio{
+public class Episodio implements Comparable<Episodio> {
     private int idCama;
     private Data dataAdmissao;
     private Data dataAlta;
@@ -8,89 +8,102 @@ public class Episodio{
     public Episodio(int idCama, Data dataAdmissao, Data dataAlta) {
         this.idCama = idCama;
         this.dataAdmissao = dataAdmissao;
-        if  (dataAlta != null) {
-            if(dataAlta.isMaior(dataAdmissao)) {
+        if (dataAlta != null) {
+            if (dataAdmissao.isMaior(dataAlta)) {
                 System.out.println("Data inválida. Episódio considerado como ativo, se quiser mude a data de alta.");
                 this.dataAlta = null;
                 this.flagAlta = false;
+            } else {
+                this.dataAlta = dataAlta;
+                this.flagAlta = true;
             }
-            this.dataAlta = dataAlta;
-            this.flagAlta = true;
-        } else{
+        } else {
             this.dataAlta = null;
             this.flagAlta = false;
         }
-    }
 
-    // cálculo do LoS
-    public int calcularLoS() {
-        if (this.flagAlta==false || this.dataAlta==null) {
-            return -1; // não aplicável
-        }
-        this.los = dataAdmissao.calcularDiferenca(dataAlta);
-        return this.los;
-    }
-
-    //Getters
-    public int getIdCama() {
-        return idCama;
-    }
-
-    public Data getDataAdmissao() {
-        return dataAdmissao;
-    }
-
-    public Data getDataAlta() {
-        return dataAlta;
-    }
-
-    public long getLoS() {
-        return los;
-    }
-
-    public boolean isFlagAlta() {
-        return flagAlta;
-    }
-
-    //Setters
-    public void setIdCama(int idCama) {
-        this.idCama = idCama;
-    }
-
-    public void setDataAdmissao(Data d) {
-        this.dataAdmissao = d;
         calcularLoS();
+}
+
+// cálculo do LoS
+public int calcularLoS() {
+    if (this.flagAlta == false || this.dataAlta == null) {
+        this.los=-1;
+        return this.los; // não aplicável
     }
+    this.los = dataAdmissao.calcularDiferenca(dataAlta);
+    return this.los;
+}
 
-    public void setDatAlta(Data dataAlta) {
-        this.dataAlta = dataAlta;
-        this.flagAlta = (dataAlta != null);
-        calcularLoS(); //recalcular
-    }
+//Getters
+public int getIdCama() {
+    return idCama;
+}
 
-    //ver se o episódio está ativo
-    public boolean isAtivo(Data dataReferencia) {
-        // Episódio ativo se foi admitido até à data de referência
-        // e ainda não teve alta (ou a alta é após a data de referência)
-        boolean admitido = !dataAdmissao.isMaior(dataReferencia);
-        boolean semAlta = !flagAlta || dataAlta.isMaior(dataReferencia);
-        return admitido && semAlta;
-    }
+public Data getDataAdmissao() {
+    return dataAdmissao;
+}
 
-    @Override
-    public String toString() {
-        // 1. Criamos uma variável para guardar o texto da data de alta
-        String textoDataAlta;
+public int getLoS() {
+    return los;
+}
 
-        // 2. Usamos um if/else normal para preencher essa variável
-        if (dataAlta == null) {
-            textoDataAlta = "—"; // (ou "Ainda internado")
-        } else {
-            textoDataAlta = dataAlta.toString();
+public boolean isFlagAlta() {
+    return flagAlta;
+}
+
+//Setters
+public void setIdCama(int idCama) {
+    this.idCama = idCama;
+}
+
+public void setDataAdmissao(Data d) {
+    this.dataAdmissao = d;
+    calcularLoS();
+}
+
+public void setDataAlta(Data dataAlta) {
+        if (dataAlta != null && dataAdmissao.isMaior(dataAlta)) {
+            System.out.println("Tentativa de definir data de alta inválida. Nenhuma alteração feita");
+            return;
         }
+    this.dataAlta = dataAlta;
+        if (dataAlta != null) {
+            this.flagAlta = true;
+        } else {
+            this.flagAlta = false;
+        }
+    calcularLoS(); //recalcular
+}
 
-        // 3. Imprimimos tudo usando a nossa nova variável
-        return String.format("ID: %d, Data Admissão: %s, Data Alta: %s, LoS: %d dias",
-                idCama, dataAdmissao, textoDataAlta, los);
+//ver se o episódio está ativo
+public boolean isAtivo(Data dataReferencia) {
+    // Episódio ativo se foi admitido até à data de referência
+    // e ainda não teve alta (ou a alta é após a data de referência)
+    boolean admitido = !dataAdmissao.isMaior(dataReferencia);
+    boolean semAlta = !flagAlta || dataAlta.isMaior(dataReferencia);
+    return admitido && semAlta;
+}
+
+@Override
+public int compareTo(Episodio outro) {
+    return this.dataAdmissao.compareTo(outro.dataAdmissao);
+}
+
+@Override
+public String toString() {
+    // 1. Criamos uma variável para guardar o texto da data de alta
+    String textoDataAlta;
+
+    // 2. Usamos um if/else normal para preencher essa variável
+    if (dataAlta == null) {
+        textoDataAlta = "—"; // (ou "Ainda internado")
+    } else {
+        textoDataAlta = dataAlta.toString();
     }
+
+    // 3. Imprimimos tudo usando a nossa nova variável
+    return String.format("IDCama: %d, Data Admissão: %s, Data Alta: %s, LoS: %d dias",
+            idCama, dataAdmissao, textoDataAlta, los);
+}
 }
