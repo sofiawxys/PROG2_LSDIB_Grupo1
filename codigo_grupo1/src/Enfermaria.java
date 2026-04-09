@@ -1,23 +1,20 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Enfermaria {
 
-    private String idEnfermaria;
+    private int idEnfermaria;
     private int numCamas;
-    private List<Episodio> episodios;
+    private int episodios;
 
     public Enfermaria(int idEnfermaria, int numCamas, int episodios) {
         this.idEnfermaria = idEnfermaria;
         this.numCamas = numCamas;
-        this.episodios = new ArrayList<>();
+        this.episodios = episodios;
     }
 
-    public String getIdEnfermaria() {
+    public int getIdEnfermaria() {
         return idEnfermaria;
     }
 
-    public void setIdEnfermaria(int idEnfermaria) {
+    public void stIdEnfermaria(int idEnfermaria) {
         this.idEnfermaria = idEnfermaria;
     }
 
