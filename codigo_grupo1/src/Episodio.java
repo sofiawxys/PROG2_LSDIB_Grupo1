@@ -62,17 +62,28 @@ public class Episodio {
     }
 
     //ver se o episódio está ativo
-    public boolean isAtivo (LocalDate dataReferencia) {
+    public boolean isAtivo(LocalDate dataReferencia) {
         // Episódio ativo se foi admitido até à data de referência
         // e ainda não teve alta (ou a alta é após a data de referência)
         boolean admitido = !dataAdmissao.isAfter(dataReferencia);
-        boolean semAlta  = !flagAlta || dataAlta.isAfter(dataReferencia);
+        boolean semAlta = !flagAlta || dataAlta.isAfter(dataReferencia);
         return admitido && semAlta;
     }
 
     @Override
     public String toString() {
+        // 1. Criamos uma variável para guardar o texto da data de alta
+        String textoDataAlta;
+
+        // 2. Usamos um if/else normal para preencher essa variável
+        if (dataAlta == null) {
+            textoDataAlta = "—"; // (ou "Ainda internado")
+        } else {
+            textoDataAlta = dataAlta.toString();
+        }
+
+        // 3. Imprimimos tudo usando a nossa nova variável
         return String.format("ID: %d, Data Admissão: %s, Data Alta: %s, LoS: %d dias",
-                idCama, dataAdmissao, (dataAlta != null ? dataAlta.toString() : "—"),loS); //Se a data de alta não for nula, imprime a data. Se for nula, imprime um traço '—'
+                idCama, dataAdmissao, textoDataAlta, loS);
     }
 }
