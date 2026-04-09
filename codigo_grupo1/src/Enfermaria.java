@@ -47,6 +47,23 @@ public abstract class Enfermaria extends Data {
         return ocupacao;
     }
 
+    public double calcularTaxaOcupacao(Data datareferencia){
+        double taxaOcupacao = (calcularOcupacao(datareferencia)*100)/numCamas;
+        if(numCamas == 0){
+            return 0;
+        }else{
+            return taxaOcupacao;
+        }
+    }
+
+    public boolean EmPressao(Data datareferencia, double taxaOcupacao){
+        if(taxaOcupacao > 85) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 
 
