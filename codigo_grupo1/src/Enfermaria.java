@@ -1,20 +1,20 @@
-public abstract class Enfermaria {
+public abstract class Enfermaria extends Data {
 
-    private int idEnfermaria;
+    private String idEnfermaria;
     private int numCamas;
     private int episodios;
 
-    public Enfermaria(int idEnfermaria, int numCamas, int episodios) {
+    public Enfermaria(String idEnfermaria, int numCamas, int episodios) {
         this.idEnfermaria = idEnfermaria;
         this.numCamas = numCamas;
         this.episodios = episodios;
     }
 
-    public int getIdEnfermaria() {
+    public String getIdEnfermaria() {
         return idEnfermaria;
     }
 
-    public void stIdEnfermaria(int idEnfermaria) {
+    public void setIdEnfermaria(String idEnfermaria) {
         this.idEnfermaria = idEnfermaria;
     }
 
@@ -23,7 +23,7 @@ public abstract class Enfermaria {
     }
 
     public void setNumCamas(int numCamas){
-        this.numCamas = idEnfermaria;
+        this.numCamas = numCamas;
     }
 
     public int getEpisodios (){
@@ -32,6 +32,10 @@ public abstract class Enfermaria {
 
     public void setEpisodios(int idEnfermaria){
         this.episodios = episodios;
+    }
+
+    public void calcularOcupacao(Data datareferencia){
+        int ocupacao = episodios
     }
 
 
