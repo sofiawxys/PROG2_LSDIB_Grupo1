@@ -21,45 +21,45 @@ public abstract class Enfermaria extends Data {
         this.idEnfermaria = idEnfermaria;
     }
 
-    public int getNumCamas (){
+    public int getNumCamas() {
         return numCamas;
     }
 
-    public void setNumCamas(int numCamas){
+    public void setNumCamas(int numCamas) {
         this.numCamas = numCamas;
     }
 
-    public List<Episodio> getEpisodios (){
+    public List<Episodio> getEpisodios() {
         return episodios;
     }
 
-    public void setEpisodios(int idEnfermaria){
+    public void setEpisodios(int idEnfermaria) {
         this.episodios = episodios;
     }
 
-    public int calcularOcupacao(Data datareferencia){
+    public int calcularOcupacao(Data datareferencia) {
         int ocupacao = 0;
-        for(Episodio episodio : episodios){
-            if(episodio.isAtivo(datareferencia)){
+        for (Episodio episodio : episodios) {
+            if (episodio.isAtivo(datareferencia)) {
                 ocupacao++;
             }
         }
         return ocupacao;
     }
 
-    public double calcularTaxaOcupacao(Data datareferencia){
-        double taxaOcupacao = (calcularOcupacao(datareferencia)*100)/numCamas;
-        if(numCamas == 0){
+    public double calcularTaxaOcupacao(Data datareferencia) {
+        double taxaOcupacao = (calcularOcupacao(datareferencia) * 100) / numCamas;
+        if (numCamas == 0) {
             return 0;
-        }else{
+        } else {
             return taxaOcupacao;
         }
     }
 
-    public boolean EmPressao(Data datareferencia, double taxaOcupacao){
-        if(taxaOcupacao > 85) {
+    public boolean emPressao(Data datareferencia, double taxaOcupacao) {
+        if (taxaOcupacao > 85) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -67,5 +67,7 @@ public abstract class Enfermaria extends Data {
 
 
 
-}
+
+
+
 
