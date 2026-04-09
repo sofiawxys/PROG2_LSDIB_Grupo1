@@ -14,7 +14,7 @@ public abstract class Enfermaria extends Data {
         return idEnfermaria;
     }
 
-    public void stIdEnfermaria(String idEnfermaria) {
+    public void setIdEnfermaria(String idEnfermaria) {
         this.idEnfermaria = idEnfermaria;
     }
 
