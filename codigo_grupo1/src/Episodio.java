@@ -2,14 +2,18 @@ public class Episodio{
     private int idCama;
     private Data dataAdmissao;
     private Data dataAlta;
-    private int loS; // Length of Stay em dias
+    private int los; // Length of Stay em dias
     private boolean flagAlta; // true se o episódio já tem alta
 
     public Episodio(int idCama, Data dataAdmissao, Data dataAlta) {
         this.idCama = idCama;
         this.dataAdmissao = dataAdmissao;
         if  (dataAlta != null) {
-            if(dataAlta.isMaior(dataAdmissao)) {}
+            if(dataAlta.isMaior(dataAdmissao)) {
+                System.out.println("Data inválida. Episódio considerado como ativo, se quiser mude a data de alta.");
+                this.dataAlta = null;
+                this.flagAlta = false;
+            }
             this.dataAlta = dataAlta;
             this.flagAlta = true;
         } else{
@@ -19,9 +23,12 @@ public class Episodio{
     }
 
     // cálculo do LoS
-    private int calcularLoS() {
-        int los = dataAdmissao.calcularDiferenca(dataAlta);
-        return los;
+    public int calcularLoS() {
+        if (this.flagAlta==false || this.dataAlta==null) {
+            return -1; // não aplicável
+        }
+        this.los = dataAdmissao.calcularDiferenca(dataAlta);
+        return this.los;
     }
 
     //Getters
@@ -38,7 +45,7 @@ public class Episodio{
     }
 
     public long getLoS() {
-        return loS;
+        return los;
     }
 
     public boolean isFlagAlta() {
@@ -84,6 +91,6 @@ public class Episodio{
 
         // 3. Imprimimos tudo usando a nossa nova variável
         return String.format("ID: %d, Data Admissão: %s, Data Alta: %s, LoS: %d dias",
-                idCama, dataAdmissao, textoDataAlta, loS);
+                idCama, dataAdmissao, textoDataAlta, los);
     }
 }
