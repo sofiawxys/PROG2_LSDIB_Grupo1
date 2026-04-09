@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Enfermaria extends Data {
+public abstract class Enfermaria {
 
     private String idEnfermaria;
     private int numCamas;
@@ -63,7 +63,7 @@ public abstract class Enfermaria extends Data {
             return false;
         }
     }
-
+}
 
 
 
