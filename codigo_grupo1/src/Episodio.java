@@ -1,15 +1,11 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-
-public class Episodio {
+public class Episodio implements Data {
     private int idCama;
-    private LocalDate dataAdmissao;
-    private LocalDate dataAlta;
+    private Data dataAdmissao;
+    private Data dataAlta;
     private int loS; // Length of Stay em dias
     private boolean flagAlta; // true se o episódio já tem alta
 
-    public Episodio(int idCama, LocalDate dataAdmissao) {
+    public Episodio(int idCama, Data dataAdmissao) {
         this.idCama = idCama;
         this.dataAdmissao = dataAdmissao;
         this.dataAlta = null;
@@ -19,9 +15,8 @@ public class Episodio {
 
     // cálculo do LoS
     private void calcularLoS() {
-        if (this.dataAlta == null && dataAdmissao != null) {
-            this.loS = ChronoUnit.DAYS.between(dataAdmissao, LocalDate.now()); //perguntar se devemos colocar dataAlta em vez de LocalDateNow        }
-        }
+
+
     }
 
     //Getters
@@ -29,11 +24,11 @@ public class Episodio {
         return idCama;
     }
 
-    public LocalDate getDataAdmissao() {
+    public Data getDataAdmissao() {
         return dataAdmissao;
     }
 
-    public LocalDate getDataAlta() {
+    public Data getDataAlta() {
         return dataAlta;
     }
 
@@ -50,19 +45,19 @@ public class Episodio {
         this.idCama = idCama;
     }
 
-    public void setDataAdmissao(LocalDate d) {
+    public void setDataAdmissao(Data d) {
         this.dataAdmissao = d;
         calcularLoS();
     }
 
-    public void setDatAlta(LocalDate dataAlta) {
+    public void setDatAlta(Data dataAlta) {
         this.dataAlta = dataAlta;
         this.flagAlta = (dataAlta != null);
         calcularLoS(); //recalcular
     }
 
     //ver se o episódio está ativo
-    public boolean isAtivo(LocalDate dataReferencia) {
+    public boolean isAtivo(Data dataReferencia) {
         // Episódio ativo se foi admitido até à data de referência
         // e ainda não teve alta (ou a alta é após a data de referência)
         boolean admitido = !dataAdmissao.isAfter(dataReferencia);
