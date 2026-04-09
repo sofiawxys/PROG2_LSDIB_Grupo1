@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/PROG2_LSDIB_Grupo1.iml" filepath="$PROJECT_DIR$/.idea/PROG2_LSDIB_Grupo1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/codigo_grupo1/codigo_grupo1.iml" filepath="$PROJECT_DIR$/codigo_grupo1/codigo_grupo1.iml" />
+    </modules>
+  </component>
+</project>
