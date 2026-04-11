@@ -57,8 +57,8 @@ public class Episodio{
         this.idCama = idCama;
     }
 
-    public void setDataAdmissao(Data d) {
-        this.dataAdmissao = d;
+    public void setDataAdmissao(Data dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
         calcularLoS();
     }
 
