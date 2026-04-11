@@ -7,7 +7,7 @@ public abstract class Enfermaria extends Data {
     private int numCamas;
     private List<Episodio> episodios;
 
-    public Enfermaria(String idEnfermaria, int numCamas) {
+    public Enfermaria(String idEnfermaria, int numCamas, int episodios) {
         this.idEnfermaria = idEnfermaria;
         this.numCamas = numCamas;
         this.episodios = new ArrayList<>();
@@ -33,7 +33,7 @@ public abstract class Enfermaria extends Data {
         return episodios;
     }
 
-    public void setEpisodios(List<Episodio> episodios) {
+    public void setEpisodios(int idEnfermaria){
         this.episodios = episodios;
     }
 
@@ -48,11 +48,10 @@ public abstract class Enfermaria extends Data {
     }
 
     public double calcularTaxaOcupacao(Data datareferencia){
+        double taxaOcupacao = (calcularOcupacao(datareferencia)*100)/numCamas;
         if(numCamas == 0){
             return 0;
         }else{
-            // (double) garante que o resultado tem casas decimais
-            double taxaOcupacao = (double) (calcularOcupacao(datareferencia)/numCamas)*100;
             return taxaOcupacao;
         }
     }
@@ -64,6 +63,9 @@ public abstract class Enfermaria extends Data {
             return false;
         }
     }
+
+
+
 
 }
 
