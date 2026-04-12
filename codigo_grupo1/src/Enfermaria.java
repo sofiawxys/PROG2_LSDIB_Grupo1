@@ -7,7 +7,7 @@ public abstract class Enfermaria extends Data {
     private int numCamas;
     private List<Episodio> episodios;
 
-    public Enfermaria(String idEnfermaria, int numCamas, int episodios) {
+    public Enfermaria(String idEnfermaria, int numCamas) {
         this.idEnfermaria = idEnfermaria;
         this.numCamas = numCamas;
         this.episodios = new ArrayList<>();
