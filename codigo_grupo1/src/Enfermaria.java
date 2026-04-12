@@ -33,6 +33,10 @@ public abstract class Enfermaria extends Data {
         return episodios;
     }
 
+    public void adicionarEpisodio(Episodio episodio){
+        this.episodios.add(episodio);
+    }
+
     public void setEpisodios(int idEnfermaria){
         this.episodios = episodios;
     }
