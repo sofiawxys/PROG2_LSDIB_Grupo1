@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Enfermaria extends Data {
+public abstract class Enfermaria{
 
     private String idEnfermaria;
     private int numCamas;
@@ -37,7 +37,7 @@ public abstract class Enfermaria extends Data {
         this.episodios.add(episodio);
     }
 
-    public void setEpisodios(int idEnfermaria){
+    public void setEpisodios(List<Episodio> episodios) {
         this.episodios = episodios;
     }
 
@@ -52,10 +52,10 @@ public abstract class Enfermaria extends Data {
     }
 
     public double calcularTaxaOcupacao(Data datareferencia){
-        double taxaOcupacao = (calcularOcupacao(datareferencia)*100)/numCamas;
         if(numCamas == 0){
             return 0;
         }else{
+            double taxaOcupacao = (calcularOcupacao(datareferencia)*100)/numCamas;
             return taxaOcupacao;
         }
     }
@@ -67,9 +67,6 @@ public abstract class Enfermaria extends Data {
             return false;
         }
     }
-
-
-
 
 }
 
