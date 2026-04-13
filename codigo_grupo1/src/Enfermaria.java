@@ -68,6 +68,82 @@ public abstract class Enfermaria{
         }
     }
 
+    // Identificar episódios com data de alta e criar uma lista só com esses episódios
+    private List<Episodio> getEpisodiosComAlta() {
+        List<Episodio> comAlta = new ArrayList<>();
+        for (Episodio episodio : episodios) {
+            if (episodio.isFlagAlta()) {
+                comAlta.add(episodio);
+            }
+        }
+        return comAlta;
+    }
+
+    //Medidas de sumário do LoS
+    //Calcular a Média
+    public double calcularMediaLoS(){
+        double mediaLos = 0;
+        List<Episodio> comAlta = getEpisodiosComAlta();
+        if (comAlta.isEmpty()){
+            return 0;
+        }
+
+        for (Episodio episodio : comAlta) {
+            mediaLos = (mediaLos + episodio.calcularLoS())/comAlta.size();
+        }
+        return mediaLos;
+    }
+
+    //Calcular Desvio Padrão
+    public double calcularDesvioPadraoLos(){
+        double desvioPadraoLos = 0;
+        List<Episodio> comAlta = getEpisodiosComAlta();
+        if (comAlta.isEmpty()){
+            return 0;
+        }
+
+        double mediaLoS = calcularMediaLoS();
+        double somaDiferencasQuadrado = 0;
+
+        for (Episodio episodio : comAlta) {
+            double diferenca = episodio.calcularLoS() - mediaLoS;
+            somaDiferencasQuadrado += diferenca * diferenca;
+
+        }
+        return Math.sqrt(somaDiferencasQuadrado/comAlta.size());
+
+    }
+
+    //Calcular Mínimo de LoS
+    public int calcularMinLoS(){
+        List<Episodio> comAlta = getEpisodiosComAlta();
+        if (comAlta.isEmpty()){
+            return 0;
+        }
+        int minLoS = comAlta.get(0).calcularLoS();
+        for (Episodio episodio : comAlta) {
+            if (episodio.calcularLoS() < minLoS){
+                minLoS = episodio.calcularLoS();
+            }
+        }
+        return minLoS;
+    }
+
+    //Calcular Máximo de loS
+    public int calcularMaxLoS(){
+        List<Episodio> comAlta = getEpisodiosComAlta();
+        if (comAlta.isEmpty()){
+            return 0;
+        }
+        int maxLoS = comAlta.get(0).calcularLoS();
+        for (Episodio episodio : comAlta) {
+            if(episodio.calcularLoS() > maxLoS){
+                maxLoS = episodio.calcularLoS();
+            }
+        }
+        return maxLoS;
+    }
+
 
 
 }
