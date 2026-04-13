@@ -82,16 +82,16 @@ public abstract class Enfermaria{
     //Medidas de sumário do LoS
     //Calcular a Média
     public double calcularMediaLoS(){
-        double mediaLos = 0;
+        double soma = 0;
         List<Episodio> comAlta = getEpisodiosComAlta();
         if (comAlta.isEmpty()){
             return 0;
         }
 
         for (Episodio episodio : comAlta) {
-            mediaLos = (mediaLos + episodio.calcularLoS())/comAlta.size();
+            soma += episodio.calcularLoS();
         }
-        return mediaLos;
+        return soma / comAlta.size();
     }
 
     //Calcular Desvio Padrão

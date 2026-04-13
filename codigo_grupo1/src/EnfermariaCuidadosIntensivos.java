@@ -34,7 +34,7 @@ public class EnfermariaCuidadosIntensivos extends Enfermaria {
 
     @Override
     public String toString() {
-        return String.format("Cuidados Intensivos [%s], Camas: %d, Pressão atual: %.2f, Pressão referência: %.2f",
+        return String.format("Cuidados Intensivos [%s], Camas: %d, Visitas: %s, Pressão atual: %.2f, Pressão referência: %.2f",
                 getIdEnfermaria(),getNumCamas(),this.horarioVisitas,this.pressaoAtmosferica,this.pressaoReferencia);
     }
 }
