@@ -51,6 +51,15 @@ public abstract class Enfermaria{
         return ocupacao;
     }
 
+    public int calcularOcupacaoIntervalo(Data datareferencia1, Data datareferencia2){
+        int ocupacao = 0;
+        for(Episodio episodio : episodios){
+            if(episodio.isAtivo(datareferencia1) && episodio.isAtivo(datareferencia2)){
+                ocupacao++;
+            }
+        }
+    }
+
     public double calcularTaxaOcupacao(Data datareferencia){
         if(numCamas == 0){
             return 0;

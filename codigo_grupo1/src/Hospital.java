@@ -100,6 +100,97 @@ public class Hospital {
         enfermaria.adicionarEpisodio(ep);
     }
 
+    public void carregarEnfermarias(String nomeFicheiroCSV) throws FileNotFoundException {
+        File ficheiro = new File(nomeFicheiroCSV);
+        Scanner lerFicheiro = new Scanner(ficheiro);
+
+        // Ignorar o cabeçalho
+        if (lerFicheiro.hasNextLine()) {
+            lerFicheiro.nextLine();
+        }
+
+        while (lerFicheiro.hasNextLine()) {
+            String linha = lerFicheiro.nextLine().trim();
+            if (linha.isEmpty()) {
+                continue;
+            }
+            processarLinhaEnfermaria(linha);
+        }
+        lerFicheiro.close();
+    }
+
+    private void processarLinhaEnfermaria(String linha) {
+        String[] partes = linha.split(";", -1);
+
+        if (partes.length < 3) {
+            registoErros.add("Enfermaria inválida por falta de dados: " + linha);
+            return;
+        }
+
+        String id          = partes[0].trim();
+        String numCamasStr = partes[1].trim();
+        String tipo        = partes[2].trim();
+
+        if (id.isEmpty()) {
+            registoErros.add("ID de enfermaria vazio: " + linha);
+            return;
+        }
+
+        if (!isNumero(numCamasStr)) {
+            registoErros.add("Número de camas inválido: " + linha);
+            return;
+        }
+        int numCamas = Integer.parseInt(numCamasStr);
+
+        if (tipo.equals("GERAL")) {
+            if (partes.length < 4 || !isNumero(partes[3].trim())) {
+                registoErros.add("Número de acompanhantes inválido: " + linha);
+                return;
+            }
+            int numAcompanhantes = Integer.parseInt(partes[3].trim());
+            EnfermariaGeral eg = new EnfermariaGeral(id, numCamas, numAcompanhantes);
+
+            // Recursos são opcionais
+            if (partes.length >= 5 && !partes[4].trim().isEmpty()) {
+                String[] recursos = partes[4].split(",");
+                for (String recurso : recursos) {
+                    eg.adicionarRecurso(recurso.trim());
+                }
+            }
+            this.enfermarias.add(eg);
+
+        } else if (tipo.equals("PSIQUIATRICA")) {
+            if (partes.length < 5 || partes[3].trim().isEmpty() || partes[4].trim().isEmpty()) {
+                registoErros.add("Dados insuficientes para Enfermaria Psiquiátrica: " + linha);
+                return;
+            }
+            String horario        = partes[3].trim();
+            String nivelSeguranca = partes[4].trim();
+            this.enfermarias.add(new EnfermariaPsiquiatrica(id, numCamas, horario, nivelSeguranca));
+
+        } else if (tipo.equals("UCI")) {
+            if (partes.length < 6 || partes[3].trim().isEmpty()) {
+                registoErros.add("Dados insuficientes para Enfermaria UCI: " + linha);
+                return;
+            }
+            String horario = partes[3].trim();
+            double pressaoAtual;
+            double pressaoRef;
+            try {
+                pressaoAtual = Double.parseDouble(partes[4].trim());
+                pressaoRef   = Double.parseDouble(partes[5].trim());
+            } catch (NumberFormatException e) {
+                registoErros.add("Valores de pressão inválidos: " + linha);
+                return;
+            }
+            this.enfermarias.add(
+                new EnfermariaCuidadosIntensivos(id, numCamas, horario, pressaoAtual, pressaoRef));
+
+        } else {
+            registoErros.add("Tipo de enfermaria desconhecido (" + tipo + "): " + linha);
+        }
+    }
+
     private boolean isNumero(String texto) {
         if (texto == null) {
             return false;
@@ -116,6 +207,8 @@ public class Hospital {
         }
         return true;
     }
+
+
 
     private Data extrairData(String dataStr) {
         String[] partesData = dataStr.split("-"); // assumindo que as datas estão separadas por "-"
