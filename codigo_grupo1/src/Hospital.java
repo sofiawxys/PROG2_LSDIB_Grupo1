@@ -63,7 +63,7 @@ public class Hospital {
             return;
         }
 
-        String idEnfermaria = partes[0];
+        String idEnfermaria = partes[0].trim();
         String idCamaStr = partes[1];
         String dataAdmStr = partes[2];
 
@@ -168,9 +168,9 @@ public class Hospital {
             String nivelSeguranca = partes[4].trim();
             this.enfermarias.add(new EnfermariaPsiquiatrica(id, numCamas, horario, nivelSeguranca));
 
-        } else if (tipo.equals("UCI")) {
+        } else if (tipo.equals("ECI")) {
             if (partes.length < 6 || partes[3].trim().isEmpty()) {
-                registoErros.add("Dados insuficientes para Enfermaria UCI: " + linha);
+                registoErros.add("Dados insuficientes para Enfermaria ECI: " + linha);
                 return;
             }
             String horario = partes[3].trim();

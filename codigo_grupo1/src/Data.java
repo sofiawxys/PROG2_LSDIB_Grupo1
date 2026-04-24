@@ -236,6 +236,30 @@ public class Data {
             return totalDias;
         }
 
+    public void avancarUmDia() {
+        // Verificar quantos dias tem o mês atual
+        int diasDoMes = diasPorMes[mes];
+
+        // Ajustar para anos bissextos em fevereiro
+        if (mes == 2 && isAnoBissexto(ano)) {
+            diasDoMes = 29;
+        }
+
+        // Se ainda há dias no mês, avança o dia
+        if (dia < diasDoMes) {
+            dia++;
+            // Se chegou ao fim do mês, avança para o mês seguinte
+        } else if (mes < 12) {
+            dia = 1;
+            mes++;
+            // Se chegou ao fim do ano, avança para o ano seguinte
+        } else {
+            dia = 1;
+            mes = 1;
+            ano++;
+        }
+    }
+
         @Override
         public boolean equals(Object outroObjeto) {
             if (this == outroObjeto) {
