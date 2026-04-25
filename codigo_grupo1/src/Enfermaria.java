@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class Enfermaria{
+public abstract class Enfermaria implements GestaoOcupacao {
 
-    private static int LIMITE_PRESSAO= 85    ;
+    private static int LIMITE_PRESSAO = 85;
     private String idEnfermaria;
     private int numCamas;
     private List<Episodio> episodios;
@@ -23,48 +23,51 @@ public abstract class Enfermaria{
         this.idEnfermaria = idEnfermaria;
     }
 
-    public int getNumCamas (){
+    public int getNumCamas() {
         return numCamas;
     }
 
-    public void setNumCamas(int numCamas){
+    public void setNumCamas(int numCamas) {
         this.numCamas = numCamas;
     }
 
-    public List<Episodio> getEpisodios (){
-        return new  ArrayList<>(episodios); // devolve uma cópia defensiva
+    public List<Episodio> getEpisodios() {
+        return new ArrayList<>(episodios); // devolve uma cópia defensiva
     }
 
     //Não colocamos um setEpisodios propositadamente por segurança. Isto protege a integridade dos dados, esta classe tem controlo total sobre o que entra e sai da lista
-    //    Impedindo que a lista inteira seja acidentalmente substituida ou apagada do exterior.
+    //Impedindo que a lista inteira seja acidentalmente substituida ou apagada do exterior.
 
-    public void adicionarEpisodio(Episodio episodio){
+    public void adicionarEpisodio(Episodio episodio) {
         this.episodios.add(episodio);
     }
 
-    public int calcularOcupacao(Data datareferencia){
+@Override
+    public int calcularOcupacao(Data dataReferencia) {
         int ocupacao = 0;
-        for(Episodio episodio : episodios){
-            if(episodio.isAtivo(datareferencia)){
+        for (Episodio episodio : episodios) {
+            if (episodio.isAtivo(dataReferencia)) {
                 ocupacao++;
             }
         }
         return ocupacao;
     }
 
-    public double calcularTaxaOcupacao(Data datareferencia){
-        if(numCamas == 0){
+@Override
+    public double calcularTaxaOcupacao(Data dataReferencia) {
+        if (numCamas == 0) {
             return 0;
-        }else{
-            double taxaOcupacao = (calcularOcupacao(datareferencia)*100.0)/numCamas;
+        } else {
+            double taxaOcupacao = (calcularOcupacao(dataReferencia) * 100.0) / numCamas;
             return taxaOcupacao;
         }
     }
 
-    public boolean isEmPressao(Data datareferencia){
-        if(calcularTaxaOcupacao(datareferencia) > LIMITE_PRESSAO) {
+    @Override
+    public boolean isEmPressao(Data datareferencia) {
+        if (calcularTaxaOcupacao(datareferencia) > LIMITE_PRESSAO) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -82,10 +85,10 @@ public abstract class Enfermaria{
 
     //Medidas de sumário do LoS
     //Calcular a Média
-    public double calcularMediaLoS(){
+    public double calcularMediaLoS() {
         double soma = 0;
         List<Episodio> comAlta = getEpisodiosComAlta();
-        if (comAlta.isEmpty()){
+        if (comAlta.isEmpty()) {
             return 0;
         }
 
@@ -96,10 +99,10 @@ public abstract class Enfermaria{
     }
 
     //Calcular Desvio Padrão
-    public double calcularDesvioPadraoLos(){
+    public double calcularDesvioPadraoLos() {
         double desvioPadraoLos = 0;
         List<Episodio> comAlta = getEpisodiosComAlta();
-        if (comAlta.isEmpty()){
+        if (comAlta.isEmpty()) {
             return 0;
         }
 
@@ -111,19 +114,19 @@ public abstract class Enfermaria{
             somaDiferencasQuadrado += diferenca * diferenca;
 
         }
-        return Math.sqrt(somaDiferencasQuadrado/comAlta.size());
+        return Math.sqrt(somaDiferencasQuadrado / comAlta.size());
 
     }
 
     //Calcular Mínimo de LoS
-    public int calcularMinLoS(){
+    public int calcularMinLoS() {
         List<Episodio> comAlta = getEpisodiosComAlta();
-        if (comAlta.isEmpty()){
+        if (comAlta.isEmpty()) {
             return 0;
         }
         int minLoS = comAlta.get(0).calcularLoS();
         for (Episodio episodio : comAlta) {
-            if (episodio.calcularLoS() < minLoS){
+            if (episodio.calcularLoS() < minLoS) {
                 minLoS = episodio.calcularLoS();
             }
         }
@@ -131,20 +134,19 @@ public abstract class Enfermaria{
     }
 
     //Calcular Máximo de loS
-    public int calcularMaxLoS(){
+    public int calcularMaxLoS() {
         List<Episodio> comAlta = getEpisodiosComAlta();
-        if (comAlta.isEmpty()){
+        if (comAlta.isEmpty()) {
             return 0;
         }
         int maxLoS = comAlta.get(0).calcularLoS();
         for (Episodio episodio : comAlta) {
-            if(episodio.calcularLoS() > maxLoS){
+            if (episodio.calcularLoS() > maxLoS) {
                 maxLoS = episodio.calcularLoS();
             }
         }
         return maxLoS;
     }
-
 
 
 }
