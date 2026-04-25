@@ -208,8 +208,6 @@ public class Hospital {
         return true;
     }
 
-
-
     private Data extrairData(String dataStr) {
         String[] partesData = dataStr.split("-"); // assumindo que as datas estão separadas por "-"
 
