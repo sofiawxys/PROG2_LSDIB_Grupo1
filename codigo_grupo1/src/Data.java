@@ -1,5 +1,7 @@
+/**
+ * Adpatacao da classe Data fornecida pelos professores (adicao de alguns metodos e alteracoes noutros)
+ */
 public class Data implements Comparable<Data>{
-        // Nota: Adaptação da classe fornecida pelos professores.
     /**
          * O ano da data.
          */
@@ -237,6 +239,9 @@ public class Data implements Comparable<Data>{
             return totalDias;
         }
 
+    /**
+     * Incrementa data em exatamente um dia, gerindo automaticamente a passagem de meses e anos (incluindo anos bissextos)
+     */
     public void avancarUmDia() {
         // Verificar quantos dias tem o mês atual
         int diasDoMes = diasPorMes[mes];
@@ -261,6 +266,11 @@ public class Data implements Comparable<Data>{
         }
     }
 
+    /**
+     * Verifica se dois objetos Data sao identicos
+     * @param outroObjeto  -> outra data
+     * @return true (se os objetos data forem iguais) ou false (se os objetos data nao forem iguais)
+     */
         @Override
         public boolean equals(Object outroObjeto) {
             if (this == outroObjeto) {
@@ -282,6 +292,11 @@ public class Data implements Comparable<Data>{
             return true;
         }
 
+    /**
+     * Compara duas datas para efeitos de ordenacao, devolvendo 1, -1 ou 0 conforme a precedencia temporal
+     * @param outraData -> outra data a comparar
+     * @return 1(data original depois da outra data), 0 (mesma data), -1 (outra data depois da data original)
+     */
         @Override
         public int compareTo(Data outraData){
             if (this.isMaior(outraData))
@@ -292,8 +307,13 @@ public class Data implements Comparable<Data>{
                 return -1;
         }
 
-        public static Data parseData(String dataStr){
-            String[] data = dataStr.split(",");
+    /**
+     * Converte uma representacao textual de uma data (AAAA-MM-DD) num objeto Data
+     * @param dataStr -> data em String (AAAA-MM-DD)
+     * @return objeto data
+     */
+    public static Data parseData(String dataStr){
+            String[] data = dataStr.split("-");
             int ano = Integer.parseInt(data[0]);
             int mes = Integer.parseInt(data[1]);
             int dia = Integer.parseInt(data[2]);

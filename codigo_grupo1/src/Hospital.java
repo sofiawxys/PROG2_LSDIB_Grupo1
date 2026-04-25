@@ -5,11 +5,23 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Entidade central do programa que representa o complexo hospitalar
+ * Responsavel por gerir a lista de todas as enfermarias, processar o carregamento de dados a partir de ficheiros CSV, manter um log de erros
+ */
 public class Hospital {
+
+    //VARIAVEIS
     private String nome;
     private List<Enfermaria> enfermarias;
     private List<String> registoErros;
 
+    //CONSTRUTOR
+
+    /**
+     * Construtor que define um novo hospital, que se caracteriza pelo seu nome
+     * @param nome -> nome do hospital
+     */
     public Hospital(String nome) {
         this.nome = nome;
         this.enfermarias = new ArrayList<Enfermaria>();
@@ -18,19 +30,36 @@ public class Hospital {
 
     //Getters
 
+    /**
+     * Devolve o nome do hospital
+     * @return nome do hospital
+     */
     public String getNome() {
         return nome;
     }
 
+    /**
+     * Devolve o registo de erros encontrados no carregamento dos ficheiros
+     * @return registo de erros
+     */
     public List<String> getRegistoErros() {
         //devolve cópia defensiva
         return new ArrayList<String>(registoErros);
     }
 
+    /**
+     * Adiciona uma nova enfermaria a rede do hospital
+     * @param enfermaria -> nova enfermaria
+     */
     public void adicionarEnfermaria(Enfermaria enfermaria) {
         this.enfermarias.add(enfermaria);
     }
 
+    /**
+     * Pesquisa e devolve uma enfermaria do hopsital com base no identificador
+     * @param id -> identificador da enfermaria
+     * @return representacao textual da enfermaria
+     */
     public Enfermaria procurarEnfermaria(String id) {
         for (Enfermaria enfermaria : this.enfermarias) {
             if (enfermaria.getIdEnfermaria().equals(id)) {
@@ -40,6 +69,11 @@ public class Hospital {
         return null;
     }
 
+    /**
+     * Le um ficheiro CSV e carrega os episodios clinicos, associando-os as enfermarias correspondentes
+     * @param nomeFicheiroCSV ->nome do ficheiro CSV com os episodios
+     * @throws FileNotFoundException
+     */
     public void carregarEpisodios(String nomeFicheiroCSV) throws FileNotFoundException {
         File ficheiro = new File(nomeFicheiroCSV);
 
@@ -57,6 +91,10 @@ public class Hospital {
         lerFicheiro.close();
     }
 
+    /**
+     * Analisa e valida uma unica linha de texto do ficheiro de episodios, garantindo que as datas e as enfermarias associadas sao validas
+     * @param linha -> linha de texto no ficheiro CSV
+     */
     private void processarLinhaEpisodio(String linha) {
         String[] partes = linha.split(";");
         if (partes.length < 3) {
@@ -101,6 +139,11 @@ public class Hospital {
         enfermaria.adicionarEpisodio(ep);
     }
 
+    /**
+     * Le um ficheiro CSV, ignorando o cabecalho e cria instancias de enfermarias baseadas nos dados fornecidos
+     * @param nomeFicheiroCSV -> nome do ficheiro CSV
+     * @throws FileNotFoundException
+     */
     public void carregarEnfermarias(String nomeFicheiroCSV) throws FileNotFoundException {
         File ficheiro = new File(nomeFicheiroCSV);
         Scanner lerFicheiro = new Scanner(ficheiro);
@@ -120,6 +163,10 @@ public class Hospital {
         lerFicheiro.close();
     }
 
+    /**
+     * Analisa e valida uma unica linha de texto do ficheiro de enfermarias, registando os diferentes erros no loh
+     * @param linha
+     */
     private void processarLinhaEnfermaria(String linha) {
         String[] partes = linha.split(";", -1);
 
@@ -188,7 +235,11 @@ public class Hospital {
         }
     }
 
-
+    /**
+     * Converte yma string de data no formato AAAA-MM-DD para um objeto da classe Data
+     * @param dataStr -> data (AAAA-MM-DD) em String
+     * @return data como objeto da classe Data
+     */
     private Data extrairData(String dataStr) {
         String[] partesData = dataStr.split("-"); // assumindo que as datas estão separadas por "-"
 
@@ -207,6 +258,11 @@ public class Hospital {
         return new Data(ano, mes, dia);
     }
 
+    /**
+     * Cria uma copia da lista de enfermarias e ordena-a por ordem decrescente de taxa de ocupacao na data fornecida
+     * @param dataReferencia -> data de referencia
+     * @return lista ordenada de enfermarias por taxa de ocupacao numa certa data (ordem decrescente)
+     */
     public List<Enfermaria> listarEnfermariasOrdenadasPorOcupacao(Data dataReferencia) {
         List<Enfermaria> enfermariasOrdenadasOcupacao = new ArrayList<Enfermaria>(enfermarias);
 
@@ -224,6 +280,11 @@ public class Hospital {
 
     //MÉTODOS DE VALIDAÇÃO
 
+    /**
+     * Valida se uma dada String contem exclusivamente numeros
+     * @param texto -> string a analisar
+     * @return true(se for um numero) ou false (se nao tiver apenas numeros)
+     */
     private boolean isNumero(String texto) {
         if (texto == null) {
             return false;
@@ -241,6 +302,11 @@ public class Hospital {
         return true;
     }
 
+    /**
+     * Valida se uma string representa um numero decimal valido
+     * @param texto -> string a analisar
+     * @return true(se for um numero decimal) ou false (se nao for um numero decimal)
+     */
     private boolean isDecimal(String texto) {
         if (texto == null || texto.trim().isEmpty()) {
             return false;

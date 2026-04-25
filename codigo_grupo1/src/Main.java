@@ -4,11 +4,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Classe principal que lê os inputs do utilizador, formata outputs  e possui um menu com diferentes funcionalidades
+ */
 public class Main {
+
+    //CONSTANTES
     private static int LIMITE_INF_OPCAO = 1;
     private static int LIMITE_SUP_OPCAO = 6;
     private static int LIMITE_SUP_SUBOPCAO = 2;
 
+    /**
+     * Metodo principal que lida com o menu
+     * @param args
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException {
         Hospital hospital = new Hospital("Hospital S.João");
         Scanner scanner = new Scanner(System.in);
@@ -24,16 +34,6 @@ public class Main {
                 case 2:
                     carregarDadosFicheiro(hospital);
                     break;
-
-               /* Enfermaria eg1 = hospital.procurarEnfermaria("eg1");
-                Enfermaria ep1 = hospital.procurarEnfermaria("ep1");
-                Enfermaria ec1 = hospital.procurarEnfermaria("eci1");
-
-                if (eg1 == null || ep1 == null || ec1 == null) {
-                    System.out.println("Erro: enfermarias não encontradas. Verifica o ficheiro CSV.");
-                    return;
-                } */
-
                 case 3:
                     mostrarIndicadoresOcupacao(hospital, scanner);
                     break;
@@ -54,6 +54,9 @@ public class Main {
 
     //MÉTODOS PRINCIPAIS
 
+    /**
+     * Metodo que imprime o menu com as varias funcionalidades para o ecra
+     */
     private static void mostrarMenu() {
         System.out.println("\n===MENU===");
         System.out.println("1. Criar dados automaticamente");
@@ -65,6 +68,10 @@ public class Main {
         System.out.print("Escolha uma opção: ");
     }
 
+    /**
+     * Metodo que cria dados estáticos de enfermarias e episódios para possibilitar o teste das diferentes funcionalidades deste projeto rapidamente
+     * @param hospital -> nome do Hopsital
+     */
     private static void criarDadosAutomaticamente(Hospital hospital) {
         EnfermariaGeral eg1 = new EnfermariaGeral("eg1", 4, 2);
         eg1.adicionarRecurso("Cadeira de rodas");
@@ -104,6 +111,11 @@ public class Main {
         System.out.println("Dados criados com sucesso!");
     }
 
+    /**
+     * Metodo que solicita uma enfermaria e uma data ao utlizador e apresenta as metricas de ocupacao e LoS
+     * @param hospital -> hospital desejado
+     * @param scanner
+     */
     private static void mostrarIndicadoresOcupacao(Hospital hospital, Scanner scanner) {
         System.out.print("Introduza o ID da enfermaria: ");
         String idEnfermaria = scanner.nextLine();
@@ -119,7 +131,7 @@ public class Main {
 
         //Pedir ao utilizador para introduzir a data de referência
         System.out.println("\nINDICADORES DE OCUPAÇÃO");
-        System.out.println("Introduza a data de referência (AAAA/MM/DD): ");
+        System.out.println("Introduza a data de referência (AAAA-MM-DD): ");
         String dataReferenciaStr = scanner.nextLine();
         Data dataReferencia = Data.parseData(dataReferenciaStr);
 
@@ -143,6 +155,11 @@ public class Main {
 
     }
 
+    /**
+     * Metodo que faz o carregamento de ficheiros CSV e imprime no ecra eventuais erros de validacao
+     * @param hospital -> hospital desejado
+     * @throws FileNotFoundException
+     */
     private static void carregarDadosFicheiro(Hospital hospital) throws FileNotFoundException {
         // Carregar episódios e enfermarias de ficheiros csv
         hospital.carregarEnfermarias("enfermarias.csv");
@@ -159,6 +176,11 @@ public class Main {
         }
     }
 
+    /**
+     * Metodo que analisa e imprime o estado diario de uma enfermaria num certo intervalo de tempo
+     * @param hospital -> hospital desejado
+     * @param scanner
+     */
     private static void mostrarEstadoPressao(Hospital hospital, Scanner scanner) {
         System.out.print("Introduza o ID da enfermaria: ");
         String idEnfermaria = scanner.nextLine();
@@ -172,9 +194,9 @@ public class Main {
         System.out.println("Enfermaria encontrada!");
 
         //Pedir ao utilizador para introduzir as datas
-        System.out.println("Introduza a data de ínicio (AAAA/MM/DD): ");
+        System.out.println("Introduza a data de ínicio (AAAA-MM-DD): ");
         String dataInicioStr = scanner.nextLine();
-        System.out.println("Introduza data de fim (AAAA/MM/DD): ");
+        System.out.println("Introduza data de fim (AAAA-MM-DD): ");
         String dataFimStr = scanner.nextLine();
         Data dataInicio = Data.parseData(dataInicioStr);
         Data dataFim = Data.parseData(dataFimStr);
@@ -205,6 +227,11 @@ public class Main {
         System.out.println("\nPercenatgem de dias em pressão: " + String.format("%.2f", percentagemDiasPressao) + " %");
     }
 
+    /**
+     * Metodo que permite listar enfermarias ordenadas por ocupacao ou listar os episodios de uma enfermaira ordenados por admissao
+     * @param hospital -> hospital desejado
+     * @param scanner
+     */
     private static void mostrarListagens(Hospital hospital, Scanner scanner) {
         System.out.println("\n1. Listar Enfermarias por taxa de ocupação");
         System.out.println("\n2. Listar Episódios de uma Enfermaria por data de admissão");
@@ -212,7 +239,7 @@ public class Main {
         int subopcao = lerOpcao(scanner, LIMITE_INF_OPCAO, LIMITE_SUP_SUBOPCAO);
         switch (subopcao) {
             case 1:
-                System.out.println("Introduza a data de referência (AAAA/MM/DD): ");
+                System.out.println("Introduza a data de referência (AAAA-MM-DD): ");
                 String dataReferenciaStr = scanner.nextLine();
                 Data dataReferencia = Data.parseData(dataReferenciaStr);
 
@@ -257,6 +284,13 @@ public class Main {
 
 //MÉTODOS AUXILIARES
 
+    /**
+     * Metodo que le o input do teclado e garante que o utlizador introduziu um numero dentro dos limites do menu
+     * @param scanner
+     * @param limiteInf ->numero minimo que o utilizador pode inserir (menor opcao do menu)
+     * @param limiteSup -> numero maximo que o utilizador pode inseir (maior opcao do menu)
+     * @return
+     */
     public static int lerOpcao(Scanner scanner, int limiteInf, int limiteSup) {
         int opcao = Integer.parseInt(scanner.nextLine());
         while (opcao < limiteInf || opcao > limiteSup) {
