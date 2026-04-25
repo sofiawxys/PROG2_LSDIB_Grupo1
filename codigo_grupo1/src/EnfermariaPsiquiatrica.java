@@ -48,6 +48,10 @@ public class EnfermariaPsiquiatrica extends Enfermaria {
     public String getNivelSeguranca() {
         return nivelSeguranca;
     }
+    /**
+     * Define o nivel de seguranca da enfermaria
+     * @param nivelSeguranca -> nivel de seguranca da enfermaria
+     */
     public void setNivelSeguranca(String nivelSeguranca) {
         this.nivelSeguranca = nivelSeguranca;
     }

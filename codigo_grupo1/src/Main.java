@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.io.File;
 
 /**
  * Classe principal que lê os inputs do utilizador, formata outputs  e possui um menu com diferentes funcionalidades
@@ -10,9 +11,9 @@ import java.util.Scanner;
 public class Main {
 
     //CONSTANTES
-    private static int LIMITE_INF_OPCAO = 1;
-    private static int LIMITE_SUP_OPCAO = 6;
-    private static int LIMITE_SUP_SUBOPCAO = 2;
+    private static final int LIMITE_INF_OPCAO = 1;
+    private static final int LIMITE_SUP_OPCAO = 6;
+    private static final int LIMITE_SUP_SUBOPCAO = 2;
 
     /**
      * Metodo principal que lida com o menu
@@ -161,6 +162,18 @@ public class Main {
      * @throws FileNotFoundException
      */
     private static void carregarDadosFicheiro(Hospital hospital) throws FileNotFoundException {
+        // Criar objetos File apenas para verificar se existem
+        File ficheiroEnfermarias = new File("enfermarias.csv");
+        File ficheiroEpisodios = new File("episodios.csv");
+
+        // Usar um IF para testar a existência
+        if (!ficheiroEnfermarias.exists() || !ficheiroEpisodios.exists()) {
+            System.out.println("ERRO: Os ficheiros .csv não foram encontrados na pasta do projeto.");
+            System.out.println("Por favor, verifique se estão no local correto e tente novamente.");
+            return; // Sai do método imediatamente e volta ao menu
+        }
+
+        // Se o código chegar aqui, é porque os ficheiros existem
         // Carregar episódios e enfermarias de ficheiros csv
         hospital.carregarEnfermarias("enfermarias.csv");
         hospital.carregarEpisodios("episodios.csv");
@@ -194,7 +207,7 @@ public class Main {
         System.out.println("Enfermaria encontrada!");
 
         //Pedir ao utilizador para introduzir as datas
-        System.out.println("Introduza a data de ínicio (AAAA-MM-DD): ");
+        System.out.println("Introduza a data de início (AAAA-MM-DD): ");
         String dataInicioStr = scanner.nextLine();
         System.out.println("Introduza data de fim (AAAA-MM-DD): ");
         String dataFimStr = scanner.nextLine();
@@ -217,14 +230,14 @@ public class Main {
             System.out.println(dataAtual.toString() + " -> ");
             if (emPressao) {
                 diasEmPressao++;
-                System.out.println("Em Pressão (Taxa: " + String.format("%.2f", taxaOcupacao) + " %)");
+                System.out.println(dataAtual.toString() + " -> Em Pressão (Taxa: " + String.format("%.2f", taxaOcupacao) + " %)");
             } else {
-                System.out.println("Estado Normal (Taxa : " + String.format("%.2f", taxaOcupacao) + " %)");
+                System.out.println(dataAtual.toString() + " -> Estado Normal (Taxa: " + String.format("%.2f", taxaOcupacao) + " %)");
             }
             dataAtual.avancarUmDia();
         }
         double percentagemDiasPressao = ((double) diasEmPressao / totalDias) * 100;
-        System.out.println("\nPercenatgem de dias em pressão: " + String.format("%.2f", percentagemDiasPressao) + " %");
+        System.out.println("\nPercentagem de dias em pressão: " + String.format("%.2f", percentagemDiasPressao) + " %");
     }
 
     /**
@@ -289,7 +302,7 @@ public class Main {
      * @param scanner
      * @param limiteInf ->numero minimo que o utilizador pode inserir (menor opcao do menu)
      * @param limiteSup -> numero maximo que o utilizador pode inseir (maior opcao do menu)
-     * @return
+     * @return opcao introduzida pelo utilizador dentro dos limites definidos
      */
     public static int lerOpcao(Scanner scanner, int limiteInf, int limiteSup) {
         int opcao = Integer.parseInt(scanner.nextLine());

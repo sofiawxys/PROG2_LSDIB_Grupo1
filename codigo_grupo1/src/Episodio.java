@@ -28,9 +28,10 @@ public class Episodio{
                 System.out.println("Data inválida. Episódio considerado como ativo, se quiser mude a data de alta.");
                 this.dataAlta = null;
                 this.flagAlta = false;
+            } else {
+                this.dataAlta = new Data(dataAlta); //cópia da data de alta
+                this.flagAlta = true;
             }
-            this.dataAlta = new Data(dataAlta); //cópia da data de alta
-            this.flagAlta = true;
         } else{
             this.dataAlta = null;
             this.flagAlta = false;
@@ -46,6 +47,7 @@ public class Episodio{
     public int calcularLoS() {
         if (this.flagAlta==false || this.dataAlta==null) {
             this.los = -1; // não aplicável
+            return -1;
         }
         this.los = dataAdmissao.calcularDiferenca(dataAlta);
         return this.los;
@@ -74,7 +76,13 @@ public class Episodio{
      * @return data de alta
      */
     public Data getDataAlta() {
-        return new Data (dataAlta); //devolve cópia defensiva
+
+        if (dataAlta == null) {
+            return null;
+        }
+        else {
+            return new Data(dataAlta); //devolve cópia defensiva
+        }
     }
 
     /**

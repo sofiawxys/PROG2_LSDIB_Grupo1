@@ -314,21 +314,28 @@ public class Hospital {
         String textoLimpo = texto.trim();
         int contaPontos =0;
 
-        for(int i = 0; i < textoLimpo.length(); i++) {
+        for (int i = 0; i < textoLimpo.length(); i++) {
             char c = textoLimpo.charAt(i);
-            if(c == '.'){
+            if (c == '.') {
                 contaPontos++;
                 if (contaPontos > 1) {
-                    return false; // Um número só pode ter um ponto.
-                } else {
-                    if (c< '0' || c> '9'){
-                        return false; // se tiver letras, é inválido
-                    }
+                    return false;
                 }
-
+            } else if (c < '0' || c > '9') {
+                return false;
             }
         }
+
         return true;
+    }
+
+    /**
+     * Devolve uma representacao textual do hospital com o seu nome e numero de enfermarias
+     * @return representacao textual do hospital
+     */
+    @Override
+    public String toString() {
+        return String.format("Hospital: %s | Enfermarias: %d", nome, enfermarias.size());
     }
 }
 

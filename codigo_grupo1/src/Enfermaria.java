@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class Enfermaria implements GestaoOcupacao {
 
     //CONSTANTE
-    private static int LIMITE_PRESSAO = 85;
+    private static final int LIMITE_PRESSAO = 85;
 
     //VARIÁVEIS
     private String idEnfermaria;
@@ -219,7 +219,6 @@ public abstract class Enfermaria implements GestaoOcupacao {
         }
         return maxLoS;
     }
-
 
 }
 
