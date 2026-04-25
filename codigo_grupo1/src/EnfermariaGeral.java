@@ -21,12 +21,11 @@ public class EnfermariaGeral extends Enfermaria {
     }
 
     public List<String> getRecursos() {
-        return recursos;
+        return new ArrayList<>(recursos); // devolve uma cópia defensiva
     }
 
-    /*nao criamos setRecursos e assim a lista é gerida pelos seguintes métodos
-    isto protege a integridade dos dados, esta classe tem controlo total sobre o que entra e sai da lista
-    impedindo que a lista inteira seja acidentalmente substituida ou apagada do exterior */
+    /* Nao criamos setRecursos e assim a lista é gerida pelos seguintes métodos. Isto protege a integridade dos dados, esta classe tem controlo total sobre o que entra e sai da lista
+    Impedindo que a lista inteira seja acidentalmente substituida ou apagada do exterior. */
 
     public void adicionarRecurso (String recurso){
         this.recursos.add(recurso);

@@ -1,5 +1,6 @@
-public class Data {
-        /**
+public class Data implements Comparable<Data>{
+        // Nota: Adaptação da classe fornecida pelos professores.
+    /**
          * O ano da data.
          */
         private int ano;
@@ -55,7 +56,7 @@ public class Data {
          * Constrói uma instância de Data recebendo o ano, o mês e o dia.
          *
          * @param ano o ano da data
-         * @param mes o mÃªs da data
+         * @param mes o mês da data
          * @param dia o dia da data
          */
         public Data(int ano, int mes, int dia) {
@@ -109,7 +110,7 @@ public class Data {
         }
 
         /**
-         * Modifica o ano, o mÃªs e o dia da data.
+         * Modifica o ano, o mês e o dia da data.
          *
          * @param ano o novo ano da data
          * @param mes o novo mês da data
@@ -124,7 +125,7 @@ public class Data {
         /**
          * Devolve a descrição textual da data no formato: diaDaSemana, dia, mês, ano.
          *
-         * @return caraterÃ­sticas da data
+         * @return caraterísticas da data
          */
         public String toString() {
             return this.determinarDiaDaSemana() + ", " + this.dia + " de " + nomeMes[mes] + " de " + ano;
@@ -217,9 +218,9 @@ public class Data {
         }
 
         /**
-         * Devolve o número de dias desde o dia 1/1/1 até à  data.
+         * Devolve o número de dias desde o dia 1/1/1 até à data.
          *
-         * @return número de dias desde o dia 1/1/1 até à  data
+         * @return número de dias desde o dia 1/1/1 até à data
          */
         private int contarDias() {
             int totalDias = 0;
@@ -280,13 +281,23 @@ public class Data {
             }
             return true;
         }
-        public int compareTo(Object data){
-            Data d = (Data)data;
-            if (this.isMaior(d))
+
+        @Override
+        public int compareTo(Data outraData){
+            if (this.isMaior(outraData))
                 return 1;
-            else if (this.equals(d))
+            else if (this.equals(outraData))
                 return 0;
             else
                 return -1;
         }
+
+        public static Data parseData(String dataStr){
+            String[] data = dataStr.split(",");
+            int ano = Integer.parseInt(data[0]);
+            int mes = Integer.parseInt(data[1]);
+            int dia = Integer.parseInt(data[2]);
+            return new Data(ano, mes, dia);
+        }
 }
+

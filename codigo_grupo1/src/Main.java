@@ -12,10 +12,10 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         Hospital hospital = new Hospital("Hospital S.João");
         Scanner scanner = new Scanner(System.in);
-        int opcao = lerOpcao(scanner, LIMITE_INF_OPCAO, LIMITE_SUP_OPCAO);
+        int opcao =0;
         while (opcao != 6) {
             mostrarMenu();
-            opcao = Integer.parseInt(scanner.nextLine());
+            opcao= lerOpcao(scanner, LIMITE_INF_OPCAO, LIMITE_SUP_OPCAO);
 
             switch (opcao) {
                 case 1:
@@ -121,12 +121,12 @@ public class Main {
         System.out.println("\nINDICADORES DE OCUPAÇÃO");
         System.out.println("Introduza a data de referência (AAAA/MM/DD): ");
         String dataReferenciaStr = scanner.nextLine();
-        Data dataReferencia = converterTextoData(dataReferenciaStr);
+        Data dataReferencia = Data.parseData(dataReferenciaStr);
 
 
         int ocupacao = enfermaria.calcularOcupacao(dataReferencia);
         double taxaOcupacao = enfermaria.calcularTaxaOcupacao(dataReferencia);
-        boolean emPressao = enfermaria.EmPressao(dataReferencia, taxaOcupacao);
+        boolean emPressao = enfermaria.isEmPressao(dataReferencia);
         System.out.println("Ocupação: " + ocupacao);
         System.out.println("Taxa de Ocupação: " + taxaOcupacao + "%");
         if (emPressao) {
@@ -176,8 +176,8 @@ public class Main {
         String dataInicioStr = scanner.nextLine();
         System.out.println("Introduza data de fim (AAAA/MM/DD): ");
         String dataFimStr = scanner.nextLine();
-        Data dataInicio = converterTextoData(dataInicioStr);
-        Data dataFim = converterTextoData(dataFimStr);
+        Data dataInicio = Data.parseData(dataInicioStr);
+        Data dataFim = Data.parseData(dataFimStr);
 
         if (!dataFim.isMaior(dataInicio) && !dataFim.equals(dataInicio)) {
             System.out.println("Erro: a data de fim tem de ser posterior à data de início.");
@@ -191,7 +191,7 @@ public class Main {
         System.out.println("\n --- Histórico de Ocupação---");
         for (int i = 0; i < totalDias; i++) {
             double taxaOcupacao = enfermaria.calcularTaxaOcupacao(dataAtual);
-            boolean emPressao = enfermaria.EmPressao(dataAtual, taxaOcupacao);
+            boolean emPressao = enfermaria.isEmPressao(dataAtual);
             System.out.println(dataAtual.toString() + " -> ");
             if (emPressao) {
                 diasEmPressao++;
@@ -214,7 +214,7 @@ public class Main {
             case 1:
                 System.out.println("Introduza a data de referência (AAAA/MM/DD): ");
                 String dataReferenciaStr = scanner.nextLine();
-                Data dataReferencia = converterTextoData(dataReferenciaStr);
+                Data dataReferencia = Data.parseData(dataReferenciaStr);
 
                 List<Enfermaria> ordenadas = hospital.listarEnfermariasOrdenadasPorOcupacao(dataReferencia);
                 System.out.println("\n--- Enfermarias Ordenadas (Ocupação Decrescente) ---");
@@ -222,7 +222,7 @@ public class Main {
                     double taxa = enfermaria.calcularTaxaOcupacao(dataReferencia);
                     System.out.println(enfermaria.toString());
                     String estadoEnfermaria;
-                    if (enfermaria.EmPressao(dataReferencia, taxa)) {
+                    if (enfermaria.isEmPressao(dataReferencia)) {
                         estadoEnfermaria = "Em pressão";
                     } else {
                         estadoEnfermaria = "Normal";
@@ -235,7 +235,7 @@ public class Main {
             case 2:
                 System.out.println("Introduza o ID da Enfermaria: ");
                 Enfermaria enfermaria = hospital.procurarEnfermaria(scanner.nextLine());
-                if (enfermaria == null) {
+                if (enfermaria != null) {
                     List<Episodio> episodios = new ArrayList<>(enfermaria.getEpisodios());
                     episodios.sort(new Comparator<Episodio>() {
                         @Override
@@ -266,14 +266,6 @@ public class Main {
         return opcao;
     }
 
-    public static Data converterTextoData(String data) {
-
-        String[] partes = data.split("/");
-        int ano = Integer.parseInt(partes[0]);
-        int mes = Integer.parseInt(partes[1]);
-        int dia = Integer.parseInt(partes[2]);
-        return new Data(ano, mes, dia);
-    }
 }
 
 

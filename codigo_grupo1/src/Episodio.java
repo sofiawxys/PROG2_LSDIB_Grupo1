@@ -7,25 +7,28 @@ public class Episodio{
 
     public Episodio(int idCama, Data dataAdmissao, Data dataAlta) {
         this.idCama = idCama;
-        this.dataAdmissao = dataAdmissao;
+        //Encapsulamento: guardar uma cópia da data
+        this.dataAdmissao = new Data(dataAdmissao);
         if  (dataAlta != null) {
-            if(dataAlta.isMaior(dataAdmissao)) {
+            if(dataAdmissao.isMaior(dataAlta)) {
                 System.out.println("Data inválida. Episódio considerado como ativo, se quiser mude a data de alta.");
                 this.dataAlta = null;
                 this.flagAlta = false;
             }
-            this.dataAlta = dataAlta;
+            this.dataAlta = new Data(dataAlta); //cópia da data de alta
             this.flagAlta = true;
         } else{
             this.dataAlta = null;
             this.flagAlta = false;
         }
+
+        calcularLoS();
     }
 
     // cálculo do LoS
     public int calcularLoS() {
         if (this.flagAlta==false || this.dataAlta==null) {
-            return -1; // não aplicável
+            this.los = -1; // não aplicável
         }
         this.los = dataAdmissao.calcularDiferenca(dataAlta);
         return this.los;
@@ -37,14 +40,14 @@ public class Episodio{
     }
 
     public Data getDataAdmissao() {
-        return dataAdmissao;
+        return new Data(dataAdmissao); //devolve cópia defensiva
     }
 
     public Data getDataAlta() {
-        return dataAlta;
+        return new Data (dataAlta); //devolve cópia defensiva
     }
 
-    public long getLoS() {
+    public int getLoS() {
         return los;
     }
 
@@ -58,12 +61,12 @@ public class Episodio{
     }
 
     public void setDataAdmissao(Data d) {
-        this.dataAdmissao = d;
+        this.dataAdmissao = new Data(d); //guarda cópia defensiva
         calcularLoS();
     }
 
-    public void setDatAlta(Data dataAlta) {
-        this.dataAlta = dataAlta;
+    public void setDataAlta(Data dataAlta) {
+        this.dataAlta = new Data (dataAlta); // guarda cópia defensiva
         this.flagAlta = (dataAlta != null);
         calcularLoS(); //recalcular
     }
@@ -79,18 +82,19 @@ public class Episodio{
 
     @Override
     public String toString() {
-        // 1. Criamos uma variável para guardar o texto da data de alta
-        String textoDataAlta;
 
-        // 2. Usamos um if/else normal para preencher essa variável
+        String textoDataAlta;
+        String textoLos;
+
         if (dataAlta == null) {
-            textoDataAlta = "—"; // (ou "Ainda internado")
+            textoDataAlta = "—"; // (Ainda internado)
+            textoLos= "N/A";
         } else {
             textoDataAlta = dataAlta.toString();
+            textoLos= los + " dias";
         }
 
-        // 3. Imprimimos tudo usando a nossa nova variável
-        return String.format("ID: %d, Data Admissão: %s, Data Alta: %s, LoS: %d dias",
-                idCama, dataAdmissao, textoDataAlta, los);
+        return String.format("ID: %d, Data Admissão: %s, Data Alta: %s, LoS: %s",
+                idCama, dataAdmissao, textoDataAlta, textoLos);
     }
 }

@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
 public abstract class Enfermaria{
 
+    private static int LIMITE_PRESSAO= 85    ;
     private String idEnfermaria;
     private int numCamas;
     private List<Episodio> episodios;
@@ -30,15 +32,14 @@ public abstract class Enfermaria{
     }
 
     public List<Episodio> getEpisodios (){
-        return episodios;
+        return new  ArrayList<>(episodios); // devolve uma cópia defensiva
     }
+
+    //Não colocamos um setEpisodios propositadamente por segurança. Isto protege a integridade dos dados, esta classe tem controlo total sobre o que entra e sai da lista
+    //    Impedindo que a lista inteira seja acidentalmente substituida ou apagada do exterior.
 
     public void adicionarEpisodio(Episodio episodio){
         this.episodios.add(episodio);
-    }
-
-    public void setEpisodios(List<Episodio> episodios) {
-        this.episodios = episodios;
     }
 
     public int calcularOcupacao(Data datareferencia){
@@ -51,27 +52,17 @@ public abstract class Enfermaria{
         return ocupacao;
     }
 
-    public int calcularOcupacaoIntervalo(Data datareferencia1, Data datareferencia2){
-        int ocupacao = 0;
-        for(Episodio episodio : episodios){
-            if(episodio.isAtivo(datareferencia1) && episodio.isAtivo(datareferencia2)){
-                ocupacao++;
-            }
-        }
-        return ocupacao;
-    }
-
     public double calcularTaxaOcupacao(Data datareferencia){
         if(numCamas == 0){
             return 0;
         }else{
-            double taxaOcupacao = (calcularOcupacao(datareferencia)*100)/numCamas;
+            double taxaOcupacao = (calcularOcupacao(datareferencia)*100.0)/numCamas;
             return taxaOcupacao;
         }
     }
 
-    public boolean EmPressao(Data datareferencia, double taxaOcupacao){
-        if(taxaOcupacao > 85) {
+    public boolean isEmPressao(Data datareferencia){
+        if(calcularTaxaOcupacao(datareferencia) > LIMITE_PRESSAO) {
             return true;
         }else{
             return false;

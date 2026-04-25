@@ -23,7 +23,8 @@ public class Hospital {
     }
 
     public List<String> getRegistoErros() {
-        return registoErros;
+        //devolve cópia defensiva
+        return new ArrayList<String>(registoErros);
     }
 
     public void adicionarEnfermaria(Enfermaria enfermaria) {
@@ -174,39 +175,19 @@ public class Hospital {
                 return;
             }
             String horario = partes[3].trim();
-            double pressaoAtual;
-            double pressaoRef;
-            try {
-                pressaoAtual = Double.parseDouble(partes[4].trim());
-                pressaoRef   = Double.parseDouble(partes[5].trim());
-            } catch (NumberFormatException e) {
+            if(! isDecimal(partes[4].trim()) || !isDecimal(partes[5].trim())) {
                 registoErros.add("Valores de pressão inválidos: " + linha);
                 return;
             }
-            this.enfermarias.add(
-                new EnfermariaCuidadosIntensivos(id, numCamas, horario, pressaoAtual, pressaoRef));
+            double pressaoAtual = Double.parseDouble(partes[4].trim());
+            double pressaoRef = Double.parseDouble(partes[5].trim());
 
+            this.enfermarias.add(new EnfermariaCuidadosIntensivos(id,numCamas, horario, pressaoAtual, pressaoRef ));
         } else {
             registoErros.add("Tipo de enfermaria desconhecido (" + tipo + "): " + linha);
         }
     }
 
-    private boolean isNumero(String texto) {
-        if (texto == null) {
-            return false;
-        }
-        String textoLimpo = texto.trim();
-        if (textoLimpo.isEmpty()) {
-            return false;
-        }
-
-        for (int i = 0; i < textoLimpo.length(); i++) {
-            char c = textoLimpo.charAt(i);
-            if (c < '0' || c > '9')
-                return false;
-        }
-        return true;
-    }
 
     private Data extrairData(String dataStr) {
         String[] partesData = dataStr.split("-"); // assumindo que as datas estão separadas por "-"
@@ -238,6 +219,50 @@ public class Hospital {
             }
         });
         return enfermariasOrdenadasOcupacao;
+    }
+
+
+    //MÉTODOS DE VALIDAÇÃO
+
+    private boolean isNumero(String texto) {
+        if (texto == null) {
+            return false;
+        }
+        String textoLimpo = texto.trim();
+        if (textoLimpo.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < textoLimpo.length(); i++) {
+            char c = textoLimpo.charAt(i);
+            if (c < '0' || c > '9')
+                return false;
+        }
+        return true;
+    }
+
+    private boolean isDecimal(String texto) {
+        if (texto == null || texto.trim().isEmpty()) {
+            return false;
+        }
+        String textoLimpo = texto.trim();
+        int contaPontos =0;
+
+        for(int i = 0; i < textoLimpo.length(); i++) {
+            char c = textoLimpo.charAt(i);
+            if(c == '.'){
+                contaPontos++;
+                if (contaPontos > 1) {
+                    return false; // Um número só pode ter um ponto.
+                } else {
+                    if (c< '0' || c> '9'){
+                        return false; // se tiver letras, é inválido
+                    }
+                }
+
+            }
+        }
+        return true;
     }
 }
 
