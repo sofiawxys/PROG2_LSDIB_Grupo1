@@ -1,0 +1,8 @@
+id;numCamas;tipo;campo4;campo5;campo6
+eg1;4;GERAL;2;Cadeira de rodas,Nebulizador;
+eg2;6;GERAL;1;Monitor cardiaco;
+ep1;5;PSIQUIATRICA;09:00-11:00;Alto;
+eci1;4;ECI;08:00-09:00;998.0;1013.0
+eci2;3;ECI;09:00-10:00;1013.0;1013.0
+E999;abc;GERAL;1;;
+E998;4;DESCONHECIDO;1;;
